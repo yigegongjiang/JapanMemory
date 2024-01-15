@@ -1,2 +1,13 @@
-# JapanMemory
-【Mac app】日本语速记
+# 日本语速记
+
+刚开始学习日语，五十音图总是记不住。于是想到了把记不住的音定时循环随机展示，以加强记忆，效果良好。
+
+## Screenshot
+
+![a](./Screenshot_a.jpg)
+![b](./Screenshot_b.jpg)
+
+## Next
+
+* 通过配置文件，可外部动态配置待记忆内容
+* 增加单词记忆
