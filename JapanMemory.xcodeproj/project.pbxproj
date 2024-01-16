@@ -13,6 +13,10 @@
 		B209075A2B55E79D00574F63 /* AppConfigs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20907582B55E79D00574F63 /* AppConfigs.swift */; };
 		B209075C2B55E84400574F63 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B209075B2B55E84400574F63 /* ContentView.swift */; };
 		B20907642B55EB3500574F63 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B20907632B55EB3500574F63 /* README.md */; };
+		B2734D362B5669EE00F03B7E /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2734D352B5669EE00F03B7E /* Filter.swift */; };
+		B29D78EF2B56210200F317C5 /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D78EE2B56210200F317C5 /* AppStore.swift */; };
+		B29DB8A82B569936007DB757 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DB8A72B569936007DB757 /* Errors.swift */; };
+		B29DB8AA2B56AF86007DB757 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DB8A92B56AF86007DB757 /* Default.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,8 +28,11 @@
 		B20907582B55E79D00574F63 /* AppConfigs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfigs.swift; sourceTree = "<group>"; };
 		B209075B2B55E84400574F63 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B209075D2B55EA9300574F63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		B209075F2B55EA9A00574F63 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		B20907632B55EB3500574F63 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B2734D352B5669EE00F03B7E /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		B29D78EE2B56210200F317C5 /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		B29DB8A72B569936007DB757 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		B29DB8A92B56AF86007DB757 /* Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +71,10 @@
 				B20907482B55E76B00574F63 /* JapanMemoryApp.swift */,
 				B209075B2B55E84400574F63 /* ContentView.swift */,
 				B20907582B55E79D00574F63 /* AppConfigs.swift */,
+				B29D78EE2B56210200F317C5 /* AppStore.swift */,
+				B2734D352B5669EE00F03B7E /* Filter.swift */,
+				B29DB8A72B569936007DB757 /* Errors.swift */,
+				B29DB8A92B56AF86007DB757 /* Default.swift */,
 				B209074C2B55E76C00574F63 /* Assets.xcassets */,
 				B20907512B55E76C00574F63 /* JapanMemory.entitlements */,
 				B209074E2B55E76C00574F63 /* Preview Content */,
@@ -82,7 +93,6 @@
 		B209075E2B55EA9A00574F63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B209075F2B55EA9A00574F63 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -158,9 +168,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2734D362B5669EE00F03B7E /* Filter.swift in Sources */,
 				B209075A2B55E79D00574F63 /* AppConfigs.swift in Sources */,
+				B29DB8AA2B56AF86007DB757 /* Default.swift in Sources */,
 				B20907492B55E76B00574F63 /* JapanMemoryApp.swift in Sources */,
 				B209075C2B55E84400574F63 /* ContentView.swift in Sources */,
+				B29DB8A82B569936007DB757 /* Errors.swift in Sources */,
+				B29D78EF2B56210200F317C5 /* AppStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,7 +319,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yigegongjiang.JapanMemory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -333,7 +347,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yigegongjiang.JapanMemory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

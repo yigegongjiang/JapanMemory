@@ -6,13 +6,46 @@
 //
 
 import SwiftUI
+import Foundation
 
+// next is random, diff from the last one.
+class RandomDida {
+  var preDida: Int = 0
+  
+  init() {}
+  
+  static var `default` = RandomDida()
+  
+  func next(_ data: [Items]) throws -> Int {
+    
+    guard !data.isEmpty else {
+      throw AppError.noItems
+    }
+    
+    var t: Int = 0
+    var flag: Bool = false
+    var times: Int = 0
+    repeat {
+      t = Int.random(in: 0..<data.count)
+      flag = t != preDida && !data[t].filted
+      times += 1
+      if (times > 1000) {
+        t = preDida
+        flag = true
+      }
+    } while !flag
+    
+    preDida = t
+    
+    return t
+  }
+}
 
 struct ContentView: View {
   
   @StateObject var config: AppConfigs = AppConfigs.default
   
-  @State var index: Int = 0
+  @State var dida: Bool = false
   @State private var timer: Timer?
   
   @State var showFilter: Bool = false
@@ -20,6 +53,7 @@ struct ContentView: View {
   var body: some View {
     VStack {
       HStack {
+        
         Button("Filter") {
           showFilter.toggle()
         }
@@ -27,44 +61,64 @@ struct ContentView: View {
           FilterView(showFilter: $showFilter,config: config)
         })
         
-        Picker("Second", selection: $config.appsettings.second) {
-          ForEach(Seconds.allCases) { v in
-            Text(v.rawValue).tag(v.rawValue)
+        Picker("Types", selection: $config.appsettings.type_sel) {
+          ForEach(config.appsettings.types, id: \.self) { v in
+            Text(v).tag(v)
           }
-          .onChange(of: config.appsettings.second) { oldValue, newValue in
+        }
+        .pickerStyle(.segmented)
+        
+        Picker("Repeats", selection: $config.appsettings.repeat_sel) {
+          ForEach(config.appsettings.repeats, id: \.self) { v in
+            let m = v.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", v) : String(format: "%.1f", v)
+            Text(m)
+              .tag(v)
+          }
+          .onChange(of: config.appsettings.repeat_sel) { oldValue, newValue in
             resetTime()
           }
         }
-        .frame(width: 150)
         .pickerStyle(.segmented)
         
-        Picker("WordSeg", selection: $config.appsettings.wordSeg) {
-          ForEach(WordSeg.allCases) { v in
-            Text(v.des).tag(v.rawValue)
+        Picker("Segments", selection: $config.appsettings.segment_sel) {
+          ForEach(config.appsettings.segments, id: \.self) { v in
+            Text(v).tag(v)
           }
         }
-        .frame(width: 300)
         .pickerStyle(.segmented)
-
-        Spacer()
       }
+      .padding(8)
+      
       Spacer()
+      
       Group {
-        let word = WordSeg(rawValue: config.appsettings.wordSeg)!
-        switch word {
-        case .All:
-          Text("\(config.appsettings.fiftyCharts[index][0])")
-          Text("\(config.appsettings.fiftyCharts[index][1])")
-          Text("\(config.appsettings.fiftyCharts[index][2])")
-        case .PIN:
-          Text("\(config.appsettings.fiftyCharts[index][0])")
-        case .PIAN:
-          Text("\(config.appsettings.fiftyCharts[index][1])")
-        case .PIN_PIAN:
-          Text("\(config.appsettings.fiftyCharts[index][0])")
-          Text("\(config.appsettings.fiftyCharts[index][1])")
-        case .YIN:
-          Text("\(config.appsettings.fiftyCharts[index][2])")
+        
+        let _ = dida
+        let segments = config.appsettings.segments
+        let (items, _) = config.appsettings.items()
+        
+        if let r = try? RandomDida.default.next(items) {
+          let m = segments.firstIndex { $0 == config.appsettings.segment_sel }
+          let offset: Int = (m != nil) ? segments.distance(from: segments.startIndex, to: m!) : 0
+          switch offset {
+          case 0:
+            Text(items[r].raw)
+            Text(items[r].alias)
+            Text(items[r].des)
+          case 1:
+            Text(items[r].raw)
+          case 2:
+            Text(items[r].alias)
+          case 3:
+            Text(items[r].raw)
+            Text(items[r].alias)
+          case 4:
+            Text(items[r].des)
+          default:
+            Text("Error")
+          }
+        } else {
+            Text("Empty Data")
         }
       }
       .font(.system(size: 80))
@@ -74,25 +128,12 @@ struct ContentView: View {
     .onAppear(perform: {
       resetTime()
     })
-    .frame(minWidth: 600, idealWidth: 600, minHeight: 400, idealHeight: 400)
+    .frame(minWidth: 1000, idealWidth: 1000, minHeight: 600, idealHeight: 600)
   }
   
   func startTime() {
-      timer = Timer.scheduledTimer(withTimeInterval: Double(config.appsettings.second)!, repeats: true) { timer in
-        var t: Int
-        var flag: Bool
-        var times: Int = 0
-        repeat {
-          t = Int.random(in: 0..<config.appsettings.fiftyCharts.count)
-          flag = t != index && config.appsettings.fiftyCharts[t][3] != "0"
-          times += 1
-          if (times > 1000) {
-            t = index
-            flag = true
-          }
-        } while !flag
-        
-        index = t
+      timer = Timer.scheduledTimer(withTimeInterval: Double(config.appsettings.repeat_sel), repeats: true) { timer in
+        dida.toggle()
       }
   }
   
@@ -106,74 +147,7 @@ struct ContentView: View {
   }
 }
 
-struct FilterItem: Identifiable {
-  var item: (Int,Int)
-  var id: UUID
-  
-  init(_ item: (Int, Int)) {
-    self.item = item
-    self.id = UUID()
-  }
-}
-
-struct FilterView: View {
-  @Binding var showFilter: Bool
-  @ObservedObject var config: AppConfigs
-  
-  let foreachItem: [FilterItem] = [
-    FilterItem((0,4)),
-    FilterItem((5,9)),
-    FilterItem((10,14)),
-    FilterItem((15,19)),
-    FilterItem((20,24)),
-    FilterItem((25,29)),
-    FilterItem((30,34)),
-    FilterItem((35,37)),
-    FilterItem((38,42)),
-    FilterItem((43,44)),
-  ]
-  
-  var body: some View {
-    Grid {
-      GridRow {
-        Button("CLOSE") {
-          showFilter.toggle()
-        }
-      }
-      ForEach(foreachItem) { m in
-        VStack {
-          GridRow {
-            HStack {
-              ForEach(m.item.0...m.item.1, id: \.self) { n in
-                VStack {
-                  Text("\(config.appsettings.fiftyCharts[n][0])")
-                  Text("\(config.appsettings.fiftyCharts[n][1])")
-                }
-                .foregroundStyle(Color.white)
-                .padding(.all, 8)
-                .onTapGesture {
-                  let t = config.appsettings.fiftyCharts[n]
-                  var tt = t
-                  tt[3] = tt[3] == "1" ? "0" : "1"
-                  config.appsettings.fiftyCharts[n] = tt
-                }
-                .background(config.appsettings.fiftyCharts[n][3] == "1" ? Color.red : Color.black)
-              }
-            }
-            Divider()
-          }
-        }
-      }
-    }
-    .frame(width: 250, height: 700)
-  }
-}
-
 #Preview {
   ContentView()
-}
-
-#Preview {
-  FilterView(showFilter: .constant(true), config: AppConfigs.default)
 }
 
